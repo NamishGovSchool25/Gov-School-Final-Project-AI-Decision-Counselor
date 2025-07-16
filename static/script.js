@@ -173,7 +173,12 @@ function initializeAuth() {
         
         // Listen for authentication state changes
         window.firebase.onAuthStateChanged(window.firebase.auth, (user) => {
-            console.log('Auth state changed:', user ? 'User logged in' : 'User logged out');
+            if (user) {
+                console.log('Auth state changed: User logged in -', user.email);
+                console.log('User UID:', user.uid);
+            } else {
+                console.log('Auth state changed: User logged out');
+            }
             updateAuthUI(user);
         });
 
@@ -255,16 +260,18 @@ function updateAuthUI(user) {
 function saveDecisionToFirebase(decision, analysis) {
     if (window.firebase && window.firebase.auth && window.firebase.auth.currentUser) {
         const user = window.firebase.auth.currentUser;
-        const decisionsRef = window.firebase.collection(window.firebase.db, 'decisions');
+        const usersRef = window.firebase.collection(window.firebase.db, 'Users');
         
-        window.firebase.addDoc(decisionsRef, {
+        // Create a new document with decision data
+        window.firebase.addDoc(usersRef, {
             userId: user.uid,
             userEmail: user.email,
-            decision: decision,
+            Decision: decision,
+            Login: user.email,
             analysis: analysis,
             timestamp: window.firebase.serverTimestamp()
         }).then(() => {
-            console.log('Decision saved to Firebase');
+            console.log('Decision saved to Firebase Users collection');
         }).catch((error) => {
             console.error('Error saving decision:', error);
         });

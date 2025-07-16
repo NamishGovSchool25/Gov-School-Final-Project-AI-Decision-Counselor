@@ -49,12 +49,28 @@
             </p>
         </div>
         
-        <!-- Save to Firebase automatically -->
+        <!-- Auto-save decision to Firebase -->
         <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Auto-save decision if user is logged in
-            const decision = {{ decision|tojson }};
-            const analysis = {{ analysis|tojson }};
+            // Wait for Firebase auth to be ready
+            if (window.firebase && window.firebase.auth) {
+                window.firebase.onAuthStateChanged(window.firebase.auth, (user) => {
+                    if (user) {
+                        console.log('User is authenticated, saving decision...');
+                        const decision = {{ decision|tojson }};
+                        const analysis = {{ analysis|tojson }};
+                        saveDecisionToFirebase(decision, analysis);
+                    } else {
+                        console.log('User not authenticated on result page');
+                    }
+                });
+            }
+            
+            // Format the analysis content
+            const analysisContainer = document.getElementById('analysisContent');
+            if (analysisContainer && typeof formatAnalysisContent === 'function') {
+                formatAnalysisContent(analysisContainer);
+            }
             
             if (window.firebase && window.firebase.auth) {
                 window.firebase.onAuthStateChanged(window.firebase.auth, (user) => {

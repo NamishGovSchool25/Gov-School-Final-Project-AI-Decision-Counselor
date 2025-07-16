@@ -34,7 +34,10 @@ def analyze_decision():
         
         return render_template('result.html', 
                              decision=user_decision, 
-                             analysis=analysis)
+                             analysis=analysis,
+                             firebase_api_key=os.environ.get("FIREBASE_API_KEY"),
+                             firebase_project_id=os.environ.get("FIREBASE_PROJECT_ID"),
+                             firebase_app_id=os.environ.get("FIREBASE_APP_ID"))
         
     except Exception as e:
         logger.error(f"Error in analyze_decision: {str(e)}")
