@@ -1,6 +1,11 @@
 // Enhanced JavaScript for AI Decision Helper
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize theme
+    initializeTheme();
+    
+    // Initialize Firebase authentication
+    initializeAuth();
     
     // Handle form submission with loading state
     const decisionForm = document.getElementById('decisionForm');
@@ -126,6 +131,99 @@ window.addEventListener('error', function(e) {
         alertContainer.insertBefore(errorAlert, alertContainer.firstChild);
     }
 });
+
+// Theme Management
+function initializeTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    setTheme(savedTheme);
+    
+    document.getElementById('themeToggle').addEventListener('click', function() {
+        const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
+}
+
+function setTheme(theme) {
+    document.documentElement.setAttribute('data-bs-theme', theme);
+    const themeIcon = document.getElementById('themeIcon');
+    if (themeIcon) {
+        themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+    }
+}
+
+// Firebase Authentication Management
+function initializeAuth() {
+    if (window.firebase && window.firebase.auth) {
+        // Listen for authentication state changes
+        window.firebase.onAuthStateChanged(window.firebase.auth, (user) => {
+            updateAuthUI(user);
+        });
+
+        // Handle login button
+        const loginBtn = document.getElementById('loginBtn');
+        if (loginBtn) {
+            loginBtn.addEventListener('click', function() {
+                window.firebase.signInWithRedirect(window.firebase.auth, window.firebase.provider);
+            });
+        }
+
+        // Handle logout button
+        const logoutBtn = document.getElementById('logoutBtn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.firebase.signOut(window.firebase.auth).then(() => {
+                    window.location.href = '/';
+                });
+            });
+        }
+    }
+}
+
+function updateAuthUI(user) {
+    const loginNav = document.getElementById('loginNav');
+    const userNav = document.getElementById('userNav');
+    const dashboardNav = document.getElementById('dashboardNav');
+    const userName = document.getElementById('userName');
+    const userPhoto = document.getElementById('userPhoto');
+
+    if (user) {
+        // User is signed in
+        loginNav.style.display = 'none';
+        userNav.style.display = 'block';
+        dashboardNav.style.display = 'block';
+        
+        if (userName) userName.textContent = user.displayName || user.email;
+        if (userPhoto) userPhoto.src = user.photoURL || '/static/default-avatar.svg';
+    } else {
+        // User is signed out
+        loginNav.style.display = 'block';
+        userNav.style.display = 'none';
+        dashboardNav.style.display = 'none';
+    }
+}
+
+// Enhanced form submission with user data saving
+function saveDecisionToFirebase(decision, analysis) {
+    if (window.firebase && window.firebase.auth && window.firebase.auth.currentUser) {
+        const user = window.firebase.auth.currentUser;
+        const decisionsRef = window.firebase.collection(window.firebase.db, 'decisions');
+        
+        window.firebase.addDoc(decisionsRef, {
+            userId: user.uid,
+            userEmail: user.email,
+            decision: decision,
+            analysis: analysis,
+            timestamp: new Date()
+        }).then(() => {
+            console.log('Decision saved to Firebase');
+        }).catch((error) => {
+            console.error('Error saving decision:', error);
+        });
+    }
+}
 
 // Keyboard shortcuts
 document.addEventListener('keydown', function(e) {

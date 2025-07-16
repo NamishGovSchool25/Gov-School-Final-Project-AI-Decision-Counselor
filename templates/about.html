@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block title %}About - AI Decision Helper{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <!-- Hero Section -->
+        <div class="text-center mb-5">
+            <h1 class="display-4 mb-3">
+                <i class="fas fa-heart text-danger me-3"></i>
+                Empowering Lives Through AI
+            </h1>
+            <p class="lead text-muted">
+                AI Decision Helper was created to democratize access to thoughtful guidance, 
+                helping people navigate life's challenges with confidence and clarity.
+            </p>
+        </div>
+
+        <!-- Mission Section -->
+        <div class="card shadow-lg mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-bullseye me-2"></i>
+                    Our Mission
+                </h3>
+            </div>
+            <div class="card-body">
+                <p class="lead">
+                    To provide free, accessible, and unbiased decision support to anyone facing difficult choices, 
+                    regardless of their background, location, or resources.
+                </p>
+                <p>
+                    Many people struggle with important decisions but lack access to professional guidance, 
+                    mentors, or support systems. Our AI-powered platform bridges this gap by offering 
+                    structured analysis, balanced perspectives, and thoughtful questions that help users 
+                    think through their choices systematically.
+                </p>
+            </div>
+        </div>
+
+        <!-- How It Works Section -->
+        <div class="card shadow-lg mb-4">
+            <div class="card-header bg-success text-white">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-cogs me-2"></i>
+                    How It Works
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-start">
+                            <div class="bg-primary text-white rounded-circle p-3 me-3" style="min-width: 60px;">
+                                <i class="fas fa-edit fa-lg"></i>
+                            </div>
+                            <div>
+                                <h5>1. Share Your Decision</h5>
+                                <p class="text-muted">Describe the choice you're facing and provide relevant context. The more details you share, the better guidance we can provide.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-start">
+                            <div class="bg-success text-white rounded-circle p-3 me-3" style="min-width: 60px;">
+                                <i class="fas fa-robot fa-lg"></i>
+                            </div>
+                            <div>
+                                <h5>2. AI Analysis</h5>
+                                <p class="text-muted">Our AI analyzes your situation and generates structured guidance including pros, cons, and important considerations.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-start">
+                            <div class="bg-info text-white rounded-circle p-3 me-3" style="min-width: 60px;">
+                                <i class="fas fa-lightbulb fa-lg"></i>
+                            </div>
+                            <div>
+                                <h5>3. Gain Insights</h5>
+                                <p class="text-muted">Receive balanced perspectives, overlooked factors, and reflective questions to help clarify your thinking.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-start">
+                            <div class="bg-warning text-white rounded-circle p-3 me-3" style="min-width: 60px;">
+                                <i class="fas fa-check fa-lg"></i>
+                            </div>
+                            <div>
+                                <h5>4. Make Your Choice</h5>
+                                <p class="text-muted">Use the insights to make an informed decision that aligns with your values and circumstances.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Humanitarian Impact -->
+        <div class="card shadow-lg mb-4">
+            <div class="card-header bg-danger text-white">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-globe me-2"></i>
+                    Humanitarian Impact
+                </h3>
+            </div>
+            <div class="card-body">
+                <p>
+                    <strong>Breaking Down Barriers:</strong> Decision-making guidance has traditionally been 
+                    available only to those who can afford professional counselors, coaches, or mentors. 
+                    Our platform democratizes access to thoughtful analysis, ensuring that anyone with 
+                    internet access can receive structured guidance.
+                </p>
+                
+                <div class="row mt-4">
+                    <div class="col-md-4 text-center mb-3">
+                        <i class="fas fa-users fa-3x text-primary mb-2"></i>
+                        <h5>Serving Everyone</h5>
+                        <p class="text-muted">Free access regardless of economic status, location, or background</p>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                        <i class="fas fa-clock fa-3x text-success mb-2"></i>
+                        <h5>Available 24/7</h5>
+                        <p class="text-muted">Get guidance whenever you need it, without appointments or wait times</p>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                        <i class="fas fa-shield-alt fa-3x text-info mb-2"></i>
+                        <h5>Judgment-Free</h5>
+                        <p class="text-muted">Unbiased analysis without fear of judgment or discrimination</p>
+                    </div>
+                </div>
+
+                <h5 class="mt-4 mb-3">
+                    <i class="fas fa-hands-helping me-2 text-warning"></i>
+                    Who We Help
+                </h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><i class="fas fa-graduation-cap text-primary me-2"></i> <strong>Students</strong> choosing educational paths, careers, or handling academic challenges</li>
+                    <li class="mb-2"><i class="fas fa-briefcase text-success me-2"></i> <strong>Job Seekers</strong> evaluating career opportunities and professional decisions</li>
+                    <li class="mb-2"><i class="fas fa-home text-info me-2"></i> <strong>Families</strong> making important life choices about housing, relationships, and finances</li>
+                    <li class="mb-2"><i class="fas fa-heart text-danger me-2"></i> <strong>Anyone</strong> facing personal dilemmas, health decisions, or life transitions</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Technology & Ethics -->
+        <div class="card shadow-lg mb-4">
+            <div class="card-header bg-info text-white">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-code me-2"></i>
+                    Technology & Ethics
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5><i class="fas fa-brain me-2 text-primary"></i>AI-Powered Analysis</h5>
+                        <p>We use advanced language models to provide structured, thoughtful analysis while maintaining neutrality and avoiding bias in our recommendations.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5><i class="fas fa-user-shield me-2 text-success"></i>Privacy First</h5>
+                        <p>Your decisions and personal information are treated with the utmost respect and confidentiality. We prioritize your privacy above all else.</p>
+                    </div>
+                </div>
+                
+                <div class="alert alert-warning mt-3">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    <strong>Important Note:</strong> While our AI provides valuable insights, it doesn't replace professional 
+                    advice for complex legal, medical, or financial decisions. Always consult qualified professionals when needed.
+                </div>
+            </div>
+        </div>
+
+        <!-- Call to Action -->
+        <div class="text-center">
+            <h4 class="mb-3">Ready to get guidance on your decision?</h4>
+            <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg me-3">
+                <i class="fas fa-magic me-2"></i>
+                Start Your Analysis
+            </a>
+            <button class="btn btn-outline-primary btn-lg" id="loginCTA" style="display: none;">
+                <i class="fab fa-google me-2"></i>
+                Sign In to Save Decisions
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Show sign-in CTA if user is not logged in
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.firebase && window.firebase.auth) {
+        window.firebase.onAuthStateChanged(window.firebase.auth, (user) => {
+            if (!user) {
+                document.getElementById('loginCTA').style.display = 'inline-block';
+            }
+        });
+        
+        document.getElementById('loginCTA').addEventListener('click', function() {
+            window.firebase.signInWithRedirect(window.firebase.auth, window.firebase.provider);
+        });
+    }
+});
+</script>
+{% endblock %}

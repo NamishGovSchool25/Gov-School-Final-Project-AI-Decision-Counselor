@@ -2,11 +2,21 @@
 
 ## Overview
 
-This is a Flask-based web application that helps users make difficult decisions by providing structured AI analysis. The application integrates with the Groq AI service to generate thoughtful decision guidance including pros, cons, considerations, and reflective questions.
+This is a Flask-based web application that helps users make difficult decisions by providing structured AI analysis. The application integrates with the Groq AI service to generate thoughtful decision guidance including pros, cons, considerations, and reflective questions. The platform now includes user authentication with Firebase, decision history tracking, and a comprehensive about page explaining its humanitarian mission.
 
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+
+## Recent Changes (January 2025)
+
+✓ Added Firebase authentication with Google Sign-In
+✓ Implemented user dashboard with decision history tracking  
+✓ Created About page explaining humanitarian impact and mission
+✓ Added dark/light theme toggle with persistent preferences
+✓ Enhanced navigation with user profiles and authentication states
+✓ Automatic decision saving to Firebase for logged-in users
+✓ Responsive design improvements for mobile devices
 
 ## System Architecture
 
@@ -39,7 +49,11 @@ Preferred communication style: Simple, everyday language.
 1. **Decision Input Form**: Collects user decisions with validation
 2. **AI Analysis Generation**: Structured analysis with pros, cons, and reflective questions
 3. **Results Display**: Formatted presentation of AI-generated guidance
-4. **Navigation**: Simple navigation between decision analysis and new decisions
+4. **User Authentication**: Firebase Google Sign-In for personalized experience
+5. **Decision History**: Dashboard showing saved decisions and analytics
+6. **Theme Switching**: Dark/light mode toggle with persistent preferences
+7. **About Page**: Comprehensive explanation of humanitarian mission and impact
+8. **Navigation**: Dynamic navigation based on authentication state
 
 ### Templates
 - `base.html`: Base template with navigation and common elements

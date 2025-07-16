@@ -1,5 +1,6 @@
 import logging
-from flask import render_template, request, flash, redirect, url_for
+import os
+from flask import render_template, request, flash, redirect, url_for, session
 from app import app
 from groq_service import groq_service
 
@@ -8,7 +9,10 @@ logger = logging.getLogger(__name__)
 @app.route('/')
 def index():
     """Main page with decision input form"""
-    return render_template('index.html')
+    return render_template('index.html',
+                         firebase_api_key=os.environ.get("FIREBASE_API_KEY"),
+                         firebase_project_id=os.environ.get("FIREBASE_PROJECT_ID"),
+                         firebase_app_id=os.environ.get("FIREBASE_APP_ID"))
 
 @app.route('/analyze', methods=['POST'])
 def analyze_decision():
@@ -36,6 +40,22 @@ def analyze_decision():
         logger.error(f"Error in analyze_decision: {str(e)}")
         flash(f'Sorry, there was an error processing your request: {str(e)}', 'error')
         return redirect(url_for('index'))
+
+@app.route('/about')
+def about():
+    """About page explaining the humanitarian impact"""
+    return render_template('about.html',
+                         firebase_api_key=os.environ.get("FIREBASE_API_KEY"),
+                         firebase_project_id=os.environ.get("FIREBASE_PROJECT_ID"),
+                         firebase_app_id=os.environ.get("FIREBASE_APP_ID"))
+
+@app.route('/dashboard')
+def dashboard():
+    """User dashboard showing decision history"""
+    return render_template('dashboard.html',
+                         firebase_api_key=os.environ.get("FIREBASE_API_KEY"),
+                         firebase_project_id=os.environ.get("FIREBASE_PROJECT_ID"),
+                         firebase_app_id=os.environ.get("FIREBASE_APP_ID"))
 
 @app.route('/new')
 def new_decision():

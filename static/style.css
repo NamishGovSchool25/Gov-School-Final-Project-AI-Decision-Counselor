@@ -4,6 +4,36 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Light theme overrides */
+[data-bs-theme="light"] {
+    --bs-body-bg: #ffffff;
+    --bs-body-color: #212529;
+    --bs-border-color: #dee2e6;
+}
+
+[data-bs-theme="light"] .navbar-dark {
+    background-color: #f8f9fa !important;
+}
+
+[data-bs-theme="light"] .navbar-dark .navbar-brand,
+[data-bs-theme="light"] .navbar-dark .nav-link {
+    color: #212529 !important;
+}
+
+[data-bs-theme="light"] .navbar-dark .navbar-toggler {
+    border-color: #212529;
+}
+
+[data-bs-theme="light"] .bg-dark {
+    background-color: #f8f9fa !important;
+    color: #212529 !important;
+}
+
+[data-bs-theme="light"] .text-white {
+    color: #212529 !important;
 }
 
 /* Enhanced card styling */

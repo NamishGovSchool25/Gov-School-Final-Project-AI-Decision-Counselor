@@ -48,6 +48,23 @@
                 This analysis is meant to help guide your thinking. The final decision is always yours to make.
             </p>
         </div>
+        
+        <!-- Save to Firebase automatically -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Auto-save decision if user is logged in
+            const decision = {{ decision|tojson }};
+            const analysis = {{ analysis|tojson }};
+            
+            if (window.firebase && window.firebase.auth) {
+                window.firebase.onAuthStateChanged(window.firebase.auth, (user) => {
+                    if (user && decision && analysis) {
+                        saveDecisionToFirebase(decision, analysis);
+                    }
+                });
+            }
+        });
+        </script>
     </div>
 </div>
 {% endblock %}

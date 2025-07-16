@@ -1,0 +1,254 @@
+{% extends "base.html" %}
+
+{% block title %}My Decisions - AI Decision Helper{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <!-- Welcome Section -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h2 mb-0">
+                    <i class="fas fa-chart-line text-primary me-2"></i>
+                    My Decision Journey
+                </h1>
+                <p class="text-muted mb-0">Track your decisions and see your growth over time</p>
+            </div>
+            <a href="{{ url_for('index') }}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>
+                New Decision
+            </a>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="row mb-4" id="statsOverview">
+            <div class="col-md-4">
+                <div class="card bg-primary text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="card-title">Total Decisions</h6>
+                                <h3 class="mb-0" id="totalDecisions">-</h3>
+                            </div>
+                            <i class="fas fa-balance-scale fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-success text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="card-title">This Month</h6>
+                                <h3 class="mb-0" id="monthlyDecisions">-</h3>
+                            </div>
+                            <i class="fas fa-calendar fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card bg-info text-white">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="card-title">Last Decision</h6>
+                                <h6 class="mb-0" id="lastDecisionDate">-</h6>
+                            </div>
+                            <i class="fas fa-clock fa-2x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Decision History -->
+        <div class="card shadow-lg">
+            <div class="card-header bg-dark text-white">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-history me-2"></i>
+                    Decision History
+                </h3>
+            </div>
+            <div class="card-body">
+                <!-- Loading State -->
+                <div id="loadingState" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-3 text-muted">Loading your decisions...</p>
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="text-center py-5" style="display: none;">
+                    <i class="fas fa-lightbulb fa-4x text-muted mb-3"></i>
+                    <h4>No decisions yet</h4>
+                    <p class="text-muted mb-4">Start your decision-making journey today!</p>
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">
+                        <i class="fas fa-plus me-2"></i>
+                        Make Your First Decision
+                    </a>
+                </div>
+
+                <!-- Decisions List -->
+                <div id="decisionsList" style="display: none;">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Required State -->
+        <div id="loginRequired" class="text-center py-5" style="display: none;">
+            <i class="fas fa-lock fa-4x text-muted mb-3"></i>
+            <h4>Sign In Required</h4>
+            <p class="text-muted mb-4">Please sign in to view your decision history</p>
+            <button class="btn btn-primary" id="dashboardLoginBtn">
+                <i class="fab fa-google me-2"></i>
+                Sign In with Google
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    if (window.firebase && window.firebase.auth) {
+        // Check authentication state
+        window.firebase.onAuthStateChanged(window.firebase.auth, async (user) => {
+            if (user) {
+                await loadUserDecisions(user);
+            } else {
+                showLoginRequired();
+            }
+        });
+
+        // Handle login button
+        document.getElementById('dashboardLoginBtn').addEventListener('click', function() {
+            window.firebase.signInWithRedirect(window.firebase.auth, window.firebase.provider);
+        });
+    } else {
+        showLoginRequired();
+    }
+});
+
+function showLoginRequired() {
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('statsOverview').style.display = 'none';
+    document.getElementById('loginRequired').style.display = 'block';
+    document.querySelector('.card.shadow-lg').style.display = 'none';
+}
+
+async function loadUserDecisions(user) {
+    try {
+        const decisionsRef = window.firebase.collection(window.firebase.db, 'decisions');
+        const q = window.firebase.query(
+            decisionsRef,
+            window.firebase.where('userId', '==', user.uid),
+            window.firebase.orderBy('timestamp', 'desc')
+        );
+
+        window.firebase.onSnapshot(q, (querySnapshot) => {
+            const decisions = [];
+            querySnapshot.forEach((doc) => {
+                decisions.push({ id: doc.id, ...doc.data() });
+            });
+
+            updateStats(decisions);
+            displayDecisions(decisions);
+        });
+    } catch (error) {
+        console.error('Error loading decisions:', error);
+        document.getElementById('loadingState').innerHTML = `
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Unable to load decisions. Please try refreshing the page.
+            </div>
+        `;
+    }
+}
+
+function updateStats(decisions) {
+    const total = decisions.length;
+    const now = new Date();
+    const currentMonth = now.getMonth();
+    const currentYear = now.getFullYear();
+    
+    const thisMonth = decisions.filter(d => {
+        const decisionDate = d.timestamp.toDate();
+        return decisionDate.getMonth() === currentMonth && 
+               decisionDate.getFullYear() === currentYear;
+    }).length;
+
+    const lastDecision = decisions.length > 0 ? decisions[0].timestamp.toDate() : null;
+
+    document.getElementById('totalDecisions').textContent = total;
+    document.getElementById('monthlyDecisions').textContent = thisMonth;
+    document.getElementById('lastDecisionDate').textContent = lastDecision ? 
+        formatRelativeDate(lastDecision) : 'Never';
+}
+
+function displayDecisions(decisions) {
+    document.getElementById('loadingState').style.display = 'none';
+    
+    if (decisions.length === 0) {
+        document.getElementById('emptyState').style.display = 'block';
+        return;
+    }
+
+    document.getElementById('decisionsList').style.display = 'block';
+    
+    const decisionsHtml = decisions.map(decision => `
+        <div class="card mb-3 border-start border-primary border-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h6 class="card-title mb-0">
+                        <i class="fas fa-balance-scale text-primary me-2"></i>
+                        Decision from ${formatDate(decision.timestamp.toDate())}
+                    </h6>
+                    <small class="text-muted">${formatRelativeDate(decision.timestamp.toDate())}</small>
+                </div>
+                <p class="card-text text-muted mb-3">${truncateText(decision.decision, 150)}</p>
+                <button class="btn btn-outline-primary btn-sm" onclick="viewDecision('${decision.id}')">
+                    <i class="fas fa-eye me-1"></i>
+                    View Analysis
+                </button>
+            </div>
+        </div>
+    `).join('');
+    
+    document.getElementById('decisionsList').innerHTML = decisionsHtml;
+}
+
+function formatDate(date) {
+    return date.toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+    });
+}
+
+function formatRelativeDate(date) {
+    const now = new Date();
+    const diffTime = Math.abs(now - date);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays === 1) return 'Today';
+    if (diffDays === 2) return 'Yesterday';
+    if (diffDays <= 7) return `${diffDays - 1} days ago`;
+    if (diffDays <= 30) return `${Math.floor(diffDays / 7)} weeks ago`;
+    return `${Math.floor(diffDays / 30)} months ago`;
+}
+
+function truncateText(text, maxLength) {
+    if (text.length <= maxLength) return text;
+    return text.substr(0, maxLength) + '...';
+}
+
+function viewDecision(decisionId) {
+    // For now, we'll implement a simple modal or alert
+    // In a more complex app, this would navigate to a detailed view
+    alert('Decision details feature coming soon!');
+}
+</script>
+{% endblock %}
