@@ -198,7 +198,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         document.getElementById('loginCTA').addEventListener('click', function() {
-            window.firebase.signInWithRedirect(window.firebase.auth, window.firebase.provider);
+            window.firebase.signInWithPopup(window.firebase.auth, window.firebase.provider)
+                .then((result) => {
+                    console.log('Sign-in successful:', result.user);
+                })
+                .catch((error) => {
+                    console.error('Popup blocked or failed, trying redirect:', error);
+                    window.firebase.signInWithRedirect(window.firebase.auth, window.firebase.provider);
+                });
         });
     }
 });

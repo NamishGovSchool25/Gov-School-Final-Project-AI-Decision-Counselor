@@ -156,8 +156,11 @@ function setTheme(theme) {
 // Firebase Authentication Management
 function initializeAuth() {
     if (window.firebase && window.firebase.auth) {
+        console.log('Firebase auth initialized');
+        
         // Listen for authentication state changes
         window.firebase.onAuthStateChanged(window.firebase.auth, (user) => {
+            console.log('Auth state changed:', user ? 'User logged in' : 'User logged out');
             updateAuthUI(user);
         });
 
@@ -165,7 +168,15 @@ function initializeAuth() {
         const loginBtn = document.getElementById('loginBtn');
         if (loginBtn) {
             loginBtn.addEventListener('click', function() {
-                window.firebase.signInWithRedirect(window.firebase.auth, window.firebase.provider);
+                // Try popup first, fall back to redirect
+                window.firebase.signInWithPopup(window.firebase.auth, window.firebase.provider)
+                    .then((result) => {
+                        console.log('Sign-in successful:', result.user);
+                    })
+                    .catch((error) => {
+                        console.error('Popup blocked or failed, trying redirect:', error);
+                        window.firebase.signInWithRedirect(window.firebase.auth, window.firebase.provider);
+                    });
             });
         }
 
@@ -216,7 +227,7 @@ function saveDecisionToFirebase(decision, analysis) {
             userEmail: user.email,
             decision: decision,
             analysis: analysis,
-            timestamp: new Date()
+            timestamp: window.firebase.serverTimestamp()
         }).then(() => {
             console.log('Decision saved to Firebase');
         }).catch((error) => {

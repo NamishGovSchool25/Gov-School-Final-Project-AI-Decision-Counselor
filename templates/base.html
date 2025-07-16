@@ -17,8 +17,8 @@
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js';
-        import { getAuth, signInWithRedirect, signOut, GoogleAuthProvider, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
-        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, query, where, orderBy, onSnapshot } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
+        import { getAuth, signInWithPopup, signInWithRedirect, getRedirectResult, signOut, GoogleAuthProvider, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-auth.js';
+        import { getFirestore, doc, setDoc, getDoc, collection, addDoc, query, where, orderBy, onSnapshot, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js';
 
         const firebaseConfig = {
             apiKey: "{{ firebase_api_key }}",
@@ -33,9 +33,41 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
+        
+        // Configure the provider
+        provider.addScope('email');
+        provider.addScope('profile');
+
+        // Check for redirect result on page load
+        getRedirectResult(auth).then((result) => {
+            if (result && result.user) {
+                console.log('Sign-in successful:', result.user);
+            }
+        }).catch((error) => {
+            console.error('Sign-in error:', error);
+        });
 
         // Make Firebase available globally
-        window.firebase = { auth, db, provider, signInWithRedirect, signOut, GoogleAuthProvider, onAuthStateChanged, doc, setDoc, getDoc, collection, addDoc, query, where, orderBy, onSnapshot };
+        window.firebase = { 
+            auth, 
+            db, 
+            provider, 
+            signInWithPopup, 
+            signInWithRedirect, 
+            signOut, 
+            GoogleAuthProvider, 
+            onAuthStateChanged, 
+            doc, 
+            setDoc, 
+            getDoc, 
+            collection, 
+            addDoc, 
+            query, 
+            where, 
+            orderBy, 
+            onSnapshot,
+            serverTimestamp
+        };
     </script>
 </head>
 <body>

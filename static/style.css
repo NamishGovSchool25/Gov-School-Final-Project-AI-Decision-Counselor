@@ -16,6 +16,7 @@ body {
 
 [data-bs-theme="light"] .navbar-dark {
     background-color: #f8f9fa !important;
+    border-bottom: 1px solid #dee2e6;
 }
 
 [data-bs-theme="light"] .navbar-dark .navbar-brand,
@@ -27,13 +28,56 @@ body {
     border-color: #212529;
 }
 
+[data-bs-theme="light"] .navbar-dark .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%2833, 37, 41, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
 [data-bs-theme="light"] .bg-dark {
     background-color: #f8f9fa !important;
     color: #212529 !important;
+    border-bottom: 1px solid #dee2e6;
+}
+
+[data-bs-theme="light"] .card-header.bg-dark {
+    background-color: #e9ecef !important;
+    color: #212529 !important;
+    border-bottom: 1px solid #dee2e6;
+}
+
+[data-bs-theme="light"] .card-header.bg-primary {
+    background-color: #0d6efd !important;
+    color: #ffffff !important;
 }
 
 [data-bs-theme="light"] .text-white {
     color: #212529 !important;
+}
+
+[data-bs-theme="light"] .text-muted {
+    color: #6c757d !important;
+}
+
+[data-bs-theme="light"] .card {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    color: #212529;
+}
+
+[data-bs-theme="light"] .btn-outline-light {
+    color: #212529;
+    border-color: #212529;
+}
+
+[data-bs-theme="light"] .btn-outline-light:hover {
+    background-color: #212529;
+    border-color: #212529;
+    color: #ffffff;
+}
+
+[data-bs-theme="light"] footer {
+    background-color: #f8f9fa !important;
+    color: #212529 !important;
+    border-top: 1px solid #dee2e6;
 }
 
 /* Enhanced card styling */
