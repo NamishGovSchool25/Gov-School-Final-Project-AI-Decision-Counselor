@@ -1,0 +1,165 @@
+/* Custom styles for the AI Decision Helper */
+
+/* Ensure proper spacing and readability */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+}
+
+/* Enhanced card styling */
+.card {
+    border: none;
+    border-radius: 12px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+/* Better form styling */
+.form-control {
+    border-radius: 8px;
+    border: 2px solid var(--bs-border-color);
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.form-control:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+/* Button enhancements */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-lg {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+}
+
+/* Loading state for buttons */
+.btn-loading {
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+/* Analysis content formatting */
+#analysisContent {
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+#analysisContent h1,
+#analysisContent h2,
+#analysisContent h3,
+#analysisContent h4,
+#analysisContent h5,
+#analysisContent h6 {
+    color: var(--bs-primary);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+#analysisContent p {
+    margin-bottom: 1.2rem;
+}
+
+#analysisContent ul,
+#analysisContent ol {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+}
+
+#analysisContent li {
+    margin-bottom: 0.5rem;
+}
+
+/* Specific styling for AI response sections */
+.pros-section,
+.cons-section,
+.considerations-section,
+.question-section {
+    background-color: var(--bs-body-bg);
+    border-left: 4px solid var(--bs-primary);
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0 8px 8px 0;
+}
+
+.pros-section {
+    border-left-color: var(--bs-success);
+}
+
+.cons-section {
+    border-left-color: var(--bs-warning);
+}
+
+.considerations-section {
+    border-left-color: var(--bs-info);
+}
+
+.question-section {
+    border-left-color: var(--bs-primary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .btn-lg {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+}
+
+/* Enhanced alert styling */
+.alert {
+    border-radius: 8px;
+    border: none;
+    font-weight: 500;
+}
+
+/* Footer styling */
+footer {
+    margin-top: auto;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Focus indicators for accessibility */
+.btn:focus,
+.form-control:focus,
+.nav-link:focus {
+    outline: 2px solid var(--bs-primary);
+    outline-offset: 2px;
+}
+
+/* Animation for page transitions */
+main {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

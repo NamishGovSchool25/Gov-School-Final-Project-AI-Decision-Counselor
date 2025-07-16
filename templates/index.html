@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+        <div class="text-center mb-5">
+            <h1 class="display-4 mb-3">
+                <i class="fas fa-balance-scale text-primary me-3"></i>
+                AI Decision Helper
+            </h1>
+            <p class="lead text-muted">
+                Struggling with a tough choice? Get structured guidance with pros, cons, 
+                and thoughtful questions to help you decide.
+            </p>
+        </div>
+
+        <div class="card shadow-lg">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-question-circle me-2"></i>
+                    What decision are you facing?
+                </h3>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('analyze_decision') }}" method="POST" id="decisionForm">
+                    <div class="mb-4">
+                        <label for="decision" class="form-label fw-bold">
+                            Describe your decision and provide relevant context:
+                        </label>
+                        <textarea 
+                            class="form-control" 
+                            id="decision" 
+                            name="decision" 
+                            rows="6" 
+                            placeholder="Example: I'm trying to decide whether to accept a job offer in another city. The salary is 20% higher, but I'd have to leave my family and friends behind. The company seems great, but I'm not sure if it's worth the sacrifice..."
+                            required
+                            minlength="10"
+                        ></textarea>
+                        <div class="form-text">
+                            <i class="fas fa-info-circle me-1"></i>
+                            The more context you provide, the better guidance you'll receive.
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg" id="analyzeBtn">
+                            <span class="btn-text">
+                                <i class="fas fa-magic me-2"></i>
+                                Get AI Guidance
+                            </span>
+                            <span class="btn-loading d-none">
+                                <span class="spinner-border spinner-border-sm me-2"></span>
+                                Analyzing your decision...
+                            </span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 bg-transparent">
+                    <div class="card-body text-center">
+                        <i class="fas fa-thumbs-up fa-3x text-success mb-3"></i>
+                        <h5>Pros & Benefits</h5>
+                        <p class="text-muted">Discover the advantages and positive outcomes</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 bg-transparent">
+                    <div class="card-body text-center">
+                        <i class="fas fa-thumbs-down fa-3x text-warning mb-3"></i>
+                        <h5>Cons & Risks</h5>
+                        <p class="text-muted">Understand potential drawbacks and challenges</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 bg-transparent">
+                    <div class="card-body text-center">
+                        <i class="fas fa-lightbulb fa-3x text-info mb-3"></i>
+                        <h5>Key Insights</h5>
+                        <p class="text-muted">Get reflective questions and overlooked factors</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

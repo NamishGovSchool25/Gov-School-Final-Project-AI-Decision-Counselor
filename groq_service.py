@@ -1,0 +1,70 @@
+import os
+import logging
+from groq import Groq
+
+logger = logging.getLogger(__name__)
+
+class GroqService:
+    def __init__(self):
+        # Get API key from environment variables with fallback
+        self.api_key = os.getenv("GROQ_API_KEY", "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")
+        self.client = Groq(api_key=self.api_key)
+    
+    def generate_decision_analysis(self, user_decision, model="llama-3.3-70b-versatile"):
+        """
+        Generate a structured decision analysis using Groq AI
+        
+        Args:
+            user_decision (str): The decision the user is struggling with
+            model (str): The Groq model to use
+            
+        Returns:
+            str: The AI-generated analysis
+        """
+        try:
+            full_prompt = f"""
+You are an AI assistant helping someone think through an important decision.
+
+Here is the decision the person is trying to make:
+{user_decision}
+
+Give a thoughtful, balanced response that includes:
+
+Pros of doing it
+Cons of doing it
+What the person might be missing or overlooking
+A reflective question that could help them decide
+
+It should be formatted with a starting message that comments on their decision. For instance, if they are trying to choose between two colleges, congratulate them on graduating, or if they are trying to decide whether or not to take AP Chemistry, tell them that you are proud that they (the user) is considering college level coursework, etc.
+
+Next, you should format the pros and cons like a list, with each bullet being a sentence. There should be one section titled, Pros:, and another titled, Cons:. The bullets should be dashes. Some situations may require you to make pro and con lists for both sides rather than the whole situation, so make sure to watch out for those. There should be at least 3 points in every pro/con list.
+
+Then there should be a section titled, Other Considerations:, that should have considerations that aren't commonly considered with their decision or things that the user may be overlooking
+
+For the reflective question, start with, To help you decide, ask yourself:, and then ask them the reflective question that could help them decide.
+
+At the end, add a sentence like the following, but personalize it for each user/decision they are trying to make: Remember, this decision is about what's best for you and your unique circumstances. Take your time, weigh your options carefully, and consider seeking advice from a ______ or trusted mentor to ensure you make an informed decision that aligns with your values and priorities.
+
+Make sure to be supportive, unbiased, and neutral.
+"""
+
+            completion = self.client.chat.completions.create(
+                model=model,
+                messages=[
+                    {
+                        "role": "system",
+                        "content": full_prompt
+                    }
+                ]
+            )
+            
+            output = completion.choices[0].message.content
+            logger.info("Successfully generated decision analysis")
+            return output
+            
+        except Exception as e:
+            logger.error(f"Error generating decision analysis: {str(e)}")
+            raise Exception(f"Failed to generate analysis: {str(e)}")
+
+# Create a global instance
+groq_service = GroqService()
