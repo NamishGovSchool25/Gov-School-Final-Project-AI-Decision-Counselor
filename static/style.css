@@ -280,3 +280,13 @@ main {
         transform: translateY(0);
     }
 }
+
+/* Fix placeholder text color in light mode */
+[data-bs-theme="light"] .form-control::placeholder {
+    color: #6c757d !important;
+    opacity: 1;
+}
+
+[data-bs-theme="light"] .form-control:focus::placeholder {
+    color: #adb5bd !important;
+}

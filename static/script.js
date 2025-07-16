@@ -201,6 +201,8 @@ function initializeAuth() {
                         if (error.code === 'auth/popup-blocked') {
                             console.log('Popup blocked, trying redirect');
                             window.firebase.signInWithRedirect(window.firebase.auth, window.firebase.provider);
+                        } else if (error.code === 'auth/configuration-not-found') {
+                            alert('Authentication is not properly configured. Please ensure:\n\n1. Firebase Authentication is enabled in the Firebase console\n2. Google sign-in provider is enabled\n3. This domain is added to authorized domains\n\nContact support if this continues.');
                         } else {
                             alert('Sign-in failed: ' + error.message);
                         }
@@ -238,6 +240,9 @@ function updateAuthUI(user) {
         
         if (userName) userName.textContent = user.displayName || user.email;
         if (userPhoto) userPhoto.src = user.photoURL || '/static/default-avatar.svg';
+        
+        // Show success message
+        console.log('User authenticated successfully:', user.email);
     } else {
         // User is signed out
         loginNav.style.display = 'block';
