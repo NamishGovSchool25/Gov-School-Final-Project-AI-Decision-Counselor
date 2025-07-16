@@ -153,32 +153,75 @@ body {
     margin-bottom: 0.5rem;
 }
 
-/* Specific styling for AI response sections */
-.pros-section,
-.cons-section,
-.considerations-section,
-.question-section {
-    background-color: var(--bs-body-bg);
+/* Enhanced styling for AI response sections */
+.analysis-section {
+    background: linear-gradient(135deg, var(--bs-body-bg) 0%, rgba(var(--bs-primary-rgb), 0.05) 100%);
+    border: 1px solid var(--bs-border-color);
     border-left: 4px solid var(--bs-primary);
-    padding: 1rem 1.5rem;
-    margin: 1.5rem 0;
-    border-radius: 0 8px 8px 0;
+    padding: 1.5rem 2rem;
+    margin: 2rem 0;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.pros-section {
+.analysis-section:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.analysis-section.pros-section {
     border-left-color: var(--bs-success);
+    background: linear-gradient(135deg, var(--bs-body-bg) 0%, rgba(var(--bs-success-rgb), 0.05) 100%);
 }
 
-.cons-section {
+.analysis-section.cons-section {
     border-left-color: var(--bs-warning);
+    background: linear-gradient(135deg, var(--bs-body-bg) 0%, rgba(var(--bs-warning-rgb), 0.05) 100%);
 }
 
-.considerations-section {
+.analysis-section.considerations-section {
     border-left-color: var(--bs-info);
+    background: linear-gradient(135deg, var(--bs-body-bg) 0%, rgba(var(--bs-info-rgb), 0.05) 100%);
 }
 
-.question-section {
+.analysis-section.question-section {
     border-left-color: var(--bs-primary);
+    background: linear-gradient(135deg, var(--bs-body-bg) 0%, rgba(var(--bs-primary-rgb), 0.05) 100%);
+}
+
+.analysis-section h4 {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.analysis-section h4 i {
+    font-size: 1.1em;
+}
+
+/* Light theme adjustments for analysis sections */
+[data-bs-theme="light"] .analysis-section {
+    background: linear-gradient(135deg, #ffffff 0%, rgba(13, 110, 253, 0.03) 100%);
+    border-color: #dee2e6;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+[data-bs-theme="light"] .analysis-section:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+[data-bs-theme="light"] .analysis-section.pros-section {
+    background: linear-gradient(135deg, #ffffff 0%, rgba(25, 135, 84, 0.03) 100%);
+}
+
+[data-bs-theme="light"] .analysis-section.cons-section {
+    background: linear-gradient(135deg, #ffffff 0%, rgba(255, 193, 7, 0.03) 100%);
+}
+
+[data-bs-theme="light"] .analysis-section.considerations-section {
+    background: linear-gradient(135deg, #ffffff 0%, rgba(13, 202, 240, 0.03) 100%);
 }
 
 /* Responsive adjustments */

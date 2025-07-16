@@ -75,22 +75,35 @@ document.addEventListener('DOMContentLoaded', function() {
 function formatAnalysisContent(container) {
     let content = container.innerHTML;
     
-    // Format section headers
-    content = content.replace(/^(Pros:|PROS:)/gmi, '<h4 class="text-success mt-4 mb-3"><i class="fas fa-thumbs-up me-2"></i>Pros:</h4>');
-    content = content.replace(/^(Cons:|CONS:)/gmi, '<h4 class="text-warning mt-4 mb-3"><i class="fas fa-thumbs-down me-2"></i>Cons:</h4>');
-    content = content.replace(/^(Other Considerations:|OTHER CONSIDERATIONS:)/gmi, '<h4 class="text-info mt-4 mb-3"><i class="fas fa-lightbulb me-2"></i>Other Considerations:</h4>');
-    content = content.replace(/^(To help you decide, ask yourself:|TO HELP YOU DECIDE, ASK YOURSELF:)/gmi, '<h4 class="text-primary mt-4 mb-3"><i class="fas fa-question-circle me-2"></i>To help you decide, ask yourself:</h4>');
+    // Remove asterisks from formatting
+    content = content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    content = content.replace(/\*(.*?)\*/g, '<em>$1</em>');
     
-    // Format lists with better styling
-    content = content.replace(/^- (.+)$/gmi, '<div class="d-flex align-items-start mb-2"><i class="fas fa-arrow-right text-muted me-2 mt-1" style="font-size: 0.8rem;"></i><span>$1</span></div>');
+    // Format section headers with icons and better styling
+    content = content.replace(/^[\*]*\s*(Pros:|PROS:)\s*[\*]*/gmi, '<div class="analysis-section pros-section mt-4 mb-3"><h4 class="text-success mb-3"><i class="fas fa-thumbs-up me-2"></i>Pros</h4>');
+    content = content.replace(/^[\*]*\s*(Cons:|CONS:)\s*[\*]*/gmi, '</div><div class="analysis-section cons-section mt-4 mb-3"><h4 class="text-warning mb-3"><i class="fas fa-thumbs-down me-2"></i>Cons</h4>');
+    content = content.replace(/^[\*]*\s*(Other Considerations:|OTHER CONSIDERATIONS:)\s*[\*]*/gmi, '</div><div class="analysis-section considerations-section mt-4 mb-3"><h4 class="text-info mb-3"><i class="fas fa-lightbulb me-2"></i>Other Considerations</h4>');
+    content = content.replace(/^[\*]*\s*(To help you decide, ask yourself:|TO HELP YOU DECIDE, ASK YOURSELF:)\s*[\*]*/gmi, '</div><div class="analysis-section question-section mt-4 mb-3"><h4 class="text-primary mb-3"><i class="fas fa-question-circle me-2"></i>Reflective Question</h4>');
     
-    // Format paragraphs
-    content = content.replace(/\n\n/g, '</p><p>');
-    content = '<p>' + content + '</p>';
+    // Format lists with icons
+    content = content.replace(/^[\s]*-\s*(.+)$/gmi, '<div class="d-flex align-items-start mb-3"><div class="me-3 mt-1"><i class="fas fa-check-circle text-success" style="font-size: 0.9rem;"></i></div><div class="flex-grow-1">$1</div></div>');
     
-    // Clean up empty paragraphs
-    content = content.replace(/<p>\s*<\/p>/g, '');
-    content = content.replace(/<p>\s*<h4/g, '<h4');
+    // Format paragraphs with better spacing
+    content = content.replace(/\n\n+/g, '</p><p class="mb-3">');
+    
+    // Add opening paragraph tag and close any remaining sections
+    if (!content.startsWith('<div class="analysis-section')) {
+        content = '<p class="mb-4 lead">' + content;
+    }
+    
+    // Close any remaining open sections
+    content += '</div>';
+    
+    // Clean up empty paragraphs and fix nested tags
+    content = content.replace(/<p[^>]*>\s*<\/p>/g, '');
+    content = content.replace(/<p[^>]*>\s*<div/g, '<div');
+    content = content.replace(/<\/div>\s*<\/p>/g, '</div>');
+    content = content.replace(/<p[^>]*>\s*<h4/g, '<h4');
     content = content.replace(/<\/h4>\s*<\/p>/g, '</h4>');
     
     container.innerHTML = content;
@@ -167,17 +180,34 @@ function initializeAuth() {
         // Handle login button
         const loginBtn = document.getElementById('loginBtn');
         if (loginBtn) {
-            loginBtn.addEventListener('click', function() {
+            loginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('Login button clicked');
+                
+                if (!window.firebase || !window.firebase.auth || !window.firebase.provider) {
+                    console.error('Firebase not properly initialized');
+                    alert('Authentication system not ready. Please refresh the page and try again.');
+                    return;
+                }
+                
                 // Try popup first, fall back to redirect
                 window.firebase.signInWithPopup(window.firebase.auth, window.firebase.provider)
                     .then((result) => {
                         console.log('Sign-in successful:', result.user);
                     })
                     .catch((error) => {
-                        console.error('Popup blocked or failed, trying redirect:', error);
-                        window.firebase.signInWithRedirect(window.firebase.auth, window.firebase.provider);
+                        console.error('Sign-in error:', error);
+                        
+                        if (error.code === 'auth/popup-blocked') {
+                            console.log('Popup blocked, trying redirect');
+                            window.firebase.signInWithRedirect(window.firebase.auth, window.firebase.provider);
+                        } else {
+                            alert('Sign-in failed: ' + error.message);
+                        }
                     });
             });
+        } else {
+            console.error('Login button not found');
         }
 
         // Handle logout button

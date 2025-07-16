@@ -38,6 +38,14 @@
         provider.addScope('email');
         provider.addScope('profile');
 
+        // Validate Firebase configuration
+        console.log('Firebase config:', {
+            apiKey: firebaseConfig.apiKey ? 'Present' : 'Missing',
+            authDomain: firebaseConfig.authDomain,
+            projectId: firebaseConfig.projectId,
+            appId: firebaseConfig.appId ? 'Present' : 'Missing'
+        });
+
         // Check for redirect result on page load
         getRedirectResult(auth).then((result) => {
             if (result && result.user) {
