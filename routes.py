@@ -38,7 +38,8 @@ def analyze_decision():
         
     except Exception as e:
         logger.error(f"Error in analyze_decision: {str(e)}")
-        flash(f'Sorry, there was an error processing your request: {str(e)}', 'error')
+        # Don't show the full error to users, just log it
+        flash('Sorry, there was an unexpected error. Please try again.', 'error')
         return redirect(url_for('index'))
 
 @app.route('/about')
