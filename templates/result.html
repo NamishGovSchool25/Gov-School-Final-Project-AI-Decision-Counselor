@@ -6,34 +6,30 @@
 <div class="row justify-content-center">
     <div class="col-lg-10">
         <div class="mb-4">
-            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left me-2"></i>
-                Back to Home
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                ← Back
             </a>
             <a href="{{ url_for('new_decision') }}" class="btn btn-primary ms-2">
-                <i class="fas fa-plus me-2"></i>
-                New Decision
+                Make Another Decision
             </a>
         </div>
 
-        <div class="card shadow-lg mb-4">
-            <div class="card-header bg-dark text-white">
-                <h3 class="card-title mb-0">
-                    <i class="fas fa-user-circle me-2"></i>
-                    Your Decision
-                </h3>
+        <div class="card mb-4">
+            <div class="card-header bg-secondary text-white">
+                <h4 class="mb-0">
+                    📝 Your Decision
+                </h4>
             </div>
             <div class="card-body">
                 <p class="lead">{{ decision }}</p>
             </div>
         </div>
 
-        <div class="card shadow-lg">
+        <div class="card">
             <div class="card-header bg-primary text-white">
-                <h3 class="card-title mb-0">
-                    <i class="fas fa-brain me-2"></i>
-                    AI Analysis & Guidance
-                </h3>
+                <h4 class="mb-0">
+                    🤖 What the AI thinks
+                </h4>
             </div>
             <div class="card-body">
                 <div id="analysisContent">
@@ -44,8 +40,7 @@
 
         <div class="text-center mt-4">
             <p class="text-muted">
-                <i class="fas fa-info-circle me-2"></i>
-                This analysis is meant to help guide your thinking. The final decision is always yours to make.
+                💡 Remember: This is just to help you think. You still have to make the final choice!
             </p>
         </div>
         

@@ -17,6 +17,9 @@ Preferred communication style: Simple, everyday language.
 ✓ Enhanced navigation with user profiles and authentication states
 ✓ Automatic decision saving to Firebase for logged-in users
 ✓ Responsive design improvements for mobile devices
+✓ Simplified frontend design to look more like a high school project (January 17, 2025)
+✓ Replaced formal icons with emojis and simplified language throughout
+✓ Reduced complex styling and made UI more casual and approachable
 
 ## System Architecture
 
